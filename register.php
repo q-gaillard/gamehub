@@ -15,7 +15,7 @@ $confirm_password = $_POST["confirm_password"] ?? '';
 if (empty($login) || empty($email) || empty($password) || empty($confirm_password))
 {
     $isValid = false;
-    $errorMessage = "tout les champs ne sont pas remplie ". $login ." ". $email ." ". $password ." ". $confirm_password;
+    $errorMessage = "tout les champs ne sont pas remplie ";
 }
 
 // es que login est valide :
