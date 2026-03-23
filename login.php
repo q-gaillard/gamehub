@@ -1,4 +1,6 @@
 <?php
+// session start
+session_start();
 
 // création des variable
 
@@ -43,12 +45,10 @@ if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/", $pas
 
 if ($isValid)
 {
-    echo "connexion réussie !";
-    ?>
-        <br/>
-        <p>revenir sur la page d'accueil :</p>
-        <a href="index.php">page d'accueil</a>
-    <?php
+    $_SESSION['identifier'] = $login;
+    $_SESSION['password'] = $password;
+    header("Location: index.php");
+    exit;
 }
 else
 {
