@@ -40,13 +40,15 @@ session_start();
             <h1 class="display-4 fw-bold">Bienvenue sur GameHub</h1>
             <p class="lead mt-3">
                 Découvrez une sélection de jeux vidéo et créez votre compte pour accéder à votre futur espace personnel.
-                <?php
-                    echo $_SESSION['identifier'];
-                ?>
             </p>
             <div class="mt-4">
-                <a href="register.html" class="btn btn-primary me-2">S'inscrire</a>
-                <a href="login.html" class="btn btn-outline-dark">Se connecter</a>
+                <?php if (!isset($_SESSION['identifier'])) : ?>
+                    <a href="register.html" class="btn btn-primary me-2">S'inscrire</a>
+                    <a href="login.html" class="btn btn-outline-dark">Se connecter</a>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['identifier'])) : ?>
+                    <h3>Bonjour <?php echo htmlspecialchars($_SESSION['identifier']); ?></h3>
+                <?php endif; ?>
             </div>
         </div>
     </header>
