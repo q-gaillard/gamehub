@@ -48,6 +48,7 @@ session_start();
                 <?php endif; ?>
                 <?php if (isset($_SESSION['identifier'])) : ?>
                     <h3>Bonjour <?php echo htmlspecialchars($_SESSION['identifier']); ?></h3>
+                    <a href="disconnection.php" class="btn btn-outline-dark">Se déconnecter</a>
                 <?php endif; ?>
             </div>
         </div>
