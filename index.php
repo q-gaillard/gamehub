@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -37,6 +40,9 @@
             <h1 class="display-4 fw-bold">Bienvenue sur GameHub</h1>
             <p class="lead mt-3">
                 Découvrez une sélection de jeux vidéo et créez votre compte pour accéder à votre futur espace personnel.
+                <?php
+                    echo $_SESSION['identifier'];
+                ?>
             </p>
             <div class="mt-4">
                 <a href="register.html" class="btn btn-primary me-2">S'inscrire</a>

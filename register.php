@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // création des variable
 
@@ -48,7 +49,14 @@ if (!$password == $confirm_password)
 
 if ($isValid)
 {
-    echo "inscription réussie !";
+    echo "inscription réussie ! ";
+    $_SESSION['identifier'] = $login;
+    $_SESSION['password'] = $password;
+    $_SESSION['email'] = $email;
+    $_SESSION['comfirm_password'] = $confirm_password;
+    echo $_SESSION['identifier'];
+    header("Location: index.php");
+    exit;
 }
 else
 {

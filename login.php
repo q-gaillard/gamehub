@@ -10,13 +10,9 @@ $errorMessage = "";
 $login = $_POST["identifier"] ?? '';
 $password = $_POST["password"] ?? '';
 
-//identifiant temporaire :
-$TrueLogin = "test";
-$TruePassword = "Test1234!";
-
 // Validation
 // vérifié si le mot de passe et l'identifiant et le bon
-if ($login != $TrueLogin || $password != $TruePassword)
+if ($login != $_SESSION['identifier'] || $password != $_SESSION['password'])
 {
     $isValid = false;
     $errorMessage = "votre identifiant ou votre mot de passe est incorrecte";
