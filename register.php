@@ -57,7 +57,6 @@ if ($isValid)
     echo $_SESSION['identifier'];
     header("Location: index.php");
     exit;
-    
 }
 else
 {
