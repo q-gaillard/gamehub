@@ -58,13 +58,13 @@ if ($isValid)
     $_SESSION['email'] = $email;
     $_SESSION['comfirm_password'] = $confirm_password;
     echo $_SESSION['identifier'];
-    header("Location: index.php");
-    exit;
 
     $sql = "INSERT INTO users (login, email, password) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$login, $email, $password]);
-
+    
+    header("Location: index.php");
+    exit;
 }
 else
 {
