@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'create_database.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

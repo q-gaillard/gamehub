@@ -1,12 +1,13 @@
 <?php
     $pdo = new PDO("mysql:host=localhost;charset=utf8", "root", "");
+    include 'db.php';
 
     // créer la base de données gamehub
-    $sql = "CREATE DATABASE gamehub";
+    $sql = "CREATE DATABASE IF NOT EXISTS gamehub";
     $pdo->exec($sql);
 
     // crée la table users
-    $sql = "CREATE TABLE users (
+    $sql = "CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         login VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
@@ -15,7 +16,7 @@
     $pdo->exec($sql);
 
     // crée la table games
-    $sql = "CREATE TABLE games (
+    $sql = "CREATE TABLE IF NOT EXISTS games (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         genre VARCHAR(255) NOT NULL,
