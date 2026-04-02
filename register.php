@@ -50,6 +50,8 @@ if (!$password == $confirm_password)
 
 if ($isValid)
 {
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
     echo "inscription réussie ! ";
     $_SESSION['identifier'] = $login;
     $_SESSION['password'] = $password;
@@ -58,6 +60,11 @@ if ($isValid)
     echo $_SESSION['identifier'];
     header("Location: index.php");
     exit;
+
+    $sql = "INSERT INTO users (login, email, password) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$login, $email, $password]);
+
 }
 else
 {
