@@ -1,6 +1,17 @@
 <?php
 session_start();
 include 'create_database.php';
+
+// récupération des jeux depuis la base de données
+$sql = "SELECT * FROM games";
+$stmt = $pdo->query($sql);
+$games = $stmt->fetchAll();
+
+// récupération des comptes
+$sql = "SELECT * FROM users";
+$stmt = $pdo->query($sql);
+$users = $stmt->fetchAll();
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -63,8 +74,8 @@ include 'create_database.php';
                 le contenu est statique. Plus tard, le site permettra de gérer des comptes utilisateurs,
                 d'afficher les jeux depuis une base de données et d'ajouter des jeux favoris.
             </p>
-            <h2 class="mb-3">Ajouter mon jeu</h2>
             <?php if (isset($_SESSION['identifier'])) : ?>
+                <h2 class="mb-3">Ajouter mon jeu</h2>
                 <p>
                     En tant qu'utilisateur connecté, vous pouvez ajouter vos jeux préférés.
                     Cliquez sur le bouton ci-dessous pour accéder au formulaire d'ajout de jeu.
@@ -78,65 +89,37 @@ include 'create_database.php';
 
             <div class="row g-4">
 
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/zelda.jpg" class="card-img-top" alt="Image du jeu Zelda">
-                        <div class="card-body">
-                            <h5 class="card-title">The Legend of Zelda</h5>
-                            <p class="card-text">
-                                Un jeu d’aventure emblématique mêlant exploration, énigmes et combats.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Genre : Aventure / Action</small>
+                <?php foreach ($games as $game) : ?>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 shadow-sm">
+                            <img src="images/<?php echo $game['image']; ?>" class="card-img-top" alt="Image du jeu <?php echo $game['title']; ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $game['title']; ?></h5>
+                                <p class="card-text">
+                                    <?php echo $game['description']; ?>
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">Genre : <?php echo $game['genre']; ?></small>
+                            </div>
+                            <div class="card-footer">
+                                <?php
+                                // trouver le nom de l'utilisateur qui a proposé le jeu
+                                $user_id = $game['user_id'];
+                                $user_name = "Inconnu";
+                                foreach ($users as $user) {
+                                    if ($user['id'] == $user_id) {
+                                        $user_name = $user['login'];
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <small class="text-muted">proposition de <?php echo $user_name; ?></small>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/minecraft.jpg" class="card-img-top" alt="Image du jeu Minecraft">
-                        <div class="card-body">
-                            <h5 class="card-title">Minecraft</h5>
-                            <p class="card-text">
-                                Un jeu de construction et de survie où la créativité est au cœur de l’expérience.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Genre : Sandbox / Survie</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/hollow-knight.jpg" class="card-img-top" alt="Image du jeu Hollow Knight">
-                        <div class="card-body">
-                            <h5 class="card-title">Hollow Knight</h5>
-                            <p class="card-text">
-                                Un jeu d’action et d’exploration en 2D avec une ambiance sombre et soignée.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Genre : Metroidvania</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/elden-ring.jpg" class="card-img-top" alt="Image du jeu Elden Ring">
-                        <div class="card-body">
-                            <h5 class="card-title">Elden Ring</h5>
-                            <p class="card-text">
-                                Un action-RPG en monde ouvert connu pour son univers riche et ses combats exigeants.
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Genre : RPG / Action</small>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
 
             </div>
         </section>
