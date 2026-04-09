@@ -54,6 +54,7 @@ if ($isValid)
 if ($isValid)
 {
     $_SESSION['identifier'] = $login;
+    $_SESSION['user_id'] = $result['id'];
     header("Location: index.php");
     exit;
 }

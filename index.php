@@ -63,6 +63,14 @@ include 'create_database.php';
                 le contenu est statique. Plus tard, le site permettra de gérer des comptes utilisateurs,
                 d'afficher les jeux depuis une base de données et d'ajouter des jeux favoris.
             </p>
+            <h2 class="mb-3">Ajouter mon jeu</h2>
+            <?php if (isset($_SESSION['identifier'])) : ?>
+                <p>
+                    En tant qu'utilisateur connecté, vous pouvez ajouter vos jeux préférés.
+                    Cliquez sur le bouton ci-dessous pour accéder au formulaire d'ajout de jeu.
+                </p>
+                <a href="add_game.html" class="btn btn-light">Ajouter un jeu</a>
+            <?php endif; ?>
         </section>
 
         <section>
