@@ -12,6 +12,11 @@ $email = $_POST["email"] ?? '';
 $password = $_POST["password"] ?? '';
 $confirm_password = $_POST["confirm_password"] ?? '';
 
+// Affichage des erreurs
+
+echo $_SESSION['error'] ?? '';
+unset($_SESSION['error']); // Nettoie le message d'erreur après l'avoir affiché
+
 // Validation
 // es que les champs sont vide :
 if (empty($login) || empty($email) || empty($password) || empty($confirm_password))
@@ -63,6 +68,8 @@ if ($isValid)
 }
 else
 {
-    echo $errorMessage;
+    $_SESSION['error'] = $errorMessage;
+    header("Location: register.php");
+    exit;
 }
 ?>

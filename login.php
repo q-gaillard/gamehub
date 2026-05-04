@@ -5,6 +5,10 @@ include 'create_database.php';
 $isValid = true;
 $errorMessage = "";
 
+// Affichage des erreurs
+echo $_SESSION['error'] ?? '';
+unset($_SESSION['error']); // Nettoie le message d'erreur après l'avoir affiché
+
 // Validation
 // vérifié si le mot de passe et l'identifiant et le bon
 $login = $_POST["identifier"] ?? '';
@@ -32,7 +36,7 @@ else if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/",
 // vérification SQL
 if ($isValid)
 {
-    $sql = "SELECT password FROM users WHERE login = ?";
+    $sql = "SELECT id, password FROM users WHERE login = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$login]);
 
@@ -41,9 +45,8 @@ if ($isValid)
     if ($result)
     {
         $TruePassword = $result['password'];
-        $TruePassword = password_hash($TruePassword, PASSWORD_DEFAULT);
 
-        if ($TruePassword != $password)
+        if (!password_verify($password, $TruePassword))
         {
             $isValid = false;
             $errorMessage = "Votre identifiant ou votre mot de passe est incorrect";
@@ -60,6 +63,8 @@ if ($isValid)
 }
 else
 {
-    echo $errorMessage;
+    $_SESSION['error'] = $errorMessage;
+    header("Location: login.php");
+    exit;
 }
 ?>

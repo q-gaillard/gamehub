@@ -74,6 +74,10 @@ $users = $stmt->fetchAll();
                 le contenu est statique. Plus tard, le site permettra de gérer des comptes utilisateurs,
                 d'afficher les jeux depuis une base de données et d'ajouter des jeux favoris.
             </p>
+
+            <?php // crée une barre de séparation ( parce que c'est joli ) ?>
+            <hr class="my-4 border-secondary">
+
             <?php if (isset($_SESSION['identifier'])) : ?>
                 <h2 class="mb-3">Ajouter mon jeu</h2>
                 <p>
@@ -81,6 +85,18 @@ $users = $stmt->fetchAll();
                     Cliquez sur le bouton ci-dessous pour accéder au formulaire d'ajout de jeu.
                 </p>
                 <a href="add_game.html" class="btn btn-light">Ajouter un jeu</a>
+                <br/><br/>
+
+                <hr class="my-4 border-secondary">
+
+                <h2 class="mb-3">Mes jeux favoris</h2>
+                <p>
+                    En tant qu'utilisateur connecté, vous pouvez gérer vos jeux favoris.
+                    Cliquez sur le bouton ci-dessous pour accéder à votre liste de jeux favoris.
+                </p>
+                <a href="favorites.php" class="btn btn-light">Voir mes jeux favoris</a>
+                <br/><br/>
+                <hr class="my-4 border-secondary">
             <?php endif; ?>
         </section>
 
