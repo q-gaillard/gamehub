@@ -30,7 +30,7 @@ $users = $stmt->fetchAll();
                     <?php foreach ($games as $game) : ?>
                         <div class="col-md-6 col-lg-3">
                             <div class="card h-100 shadow-sm">
-                                <img src="images/<?php echo $game['image']; ?>" class="card-img-top" alt="Image du jeu <?php echo $game['title']; ?>">
+                                <img src="images/<?php echo $game['image']; ?>" class="card-img-top" alt="Image du jeu <?php echo $game['title']; ?>" width="25%"; height="25%">
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $game['title']; ?></h5>
                                     <p class="card-text">
