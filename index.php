@@ -12,6 +12,24 @@ $sql = "SELECT * FROM users";
 $stmt = $pdo->query($sql);
 $users = $stmt->fetchAll();
 
+// récupération des favoris
+$sql = "SELECT * FROM favoris";
+$stmt = $pdo->query($sql);
+$favoris = $stmt->fetchAll();
+
+// crée une liste avec les id des jeux en favoris
+
+$favorites = [];
+
+if (isset($_SESSION['user_id'])) {
+    $sql = "SELECT idGame FROM favoris WHERE idUser = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$_SESSION['user_id']]);
+    
+    // on récupère juste les IDs des jeux favoris
+    $favorites = $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,7 +43,7 @@ $users = $stmt->fetchAll();
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">GameHub</a>
+            <a class="navbar-brand fw-bold" href="index.php">GameHub</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -70,47 +88,44 @@ $users = $stmt->fetchAll();
         <section class="mb-5">
             <h2 class="mb-3">À propos du projet</h2>
             <p>
-                GameHub est un mini site web consacré aux jeux vidéo. Dans cette première version,
-                le contenu est statique. Plus tard, le site permettra de gérer des comptes utilisateurs,
+                GameHub est un mini site web consacré aux jeux vidéo. le site permet de gérer des comptes utilisateurs,
                 d'afficher les jeux depuis une base de données et d'ajouter des jeux favoris.
             </p>
 
-            <?php // crée une barre de séparation ( parce que c'est joli ) ?>
             <hr class="my-4 border-secondary">
-
-            <?php if (isset($_SESSION['identifier'])) : ?>
-                <h2 class="mb-3">Ajouter mon jeu</h2>
-                <p>
-                    En tant qu'utilisateur connecté, vous pouvez ajouter vos jeux préférés.
-                    Cliquez sur le bouton ci-dessous pour accéder au formulaire d'ajout de jeu.
-                </p>
-                <a href="add_game.html" class="btn btn-light">Ajouter un jeu</a>
-                <br/><br/>
-
-                <hr class="my-4 border-secondary">
-
-                <h2 class="mb-3">Mes jeux favoris</h2>
-                <p>
-                    En tant qu'utilisateur connecté, vous pouvez gérer vos jeux favoris.
-                    Cliquez sur le bouton ci-dessous pour accéder à votre liste de jeux favoris.
-                </p>
-                <a href="favorites.php" class="btn btn-light">Voir mes jeux favoris</a>
-                <br/><br/>
-                <hr class="my-4 border-secondary">
-            <?php endif; ?>
         </section>
 
         <section>
             <h2 class="mb-4">Jeux mis en avant</h2>
 
             <div class="row g-4">
-
+                <?php $nbGames = 0 ?>
                 <?php foreach ($games as $game) : ?>
+                    <?php $nbGames = $nbGames + 1 ?>
                     <div class="col-md-6 col-lg-3">
                         <div class="card h-100 shadow-sm">
                             <img src="images/<?php echo $game['image']; ?>" class="card-img-top" alt="Image du jeu <?php echo $game['title']; ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $game['title']; ?></h5>
+                                <br/>
+                                <?php
+                                if (!in_array($game['id'], $favorites) && isset($_SESSION['identifier']))
+                                {
+                                ?>
+                                    <form method="POST" action="add_favoris.php">
+                                        <input type="hidden" name="game_id" value="<?php echo $game['id']; ?>">
+                                        <button type="submit" class="btn btn-danger">ajouter en favoris</button>
+                                    </form>
+                                <?php
+                                }
+                                else if (isset($_SESSION['identifier']))
+                                {
+                                ?>
+                                    <h6>( Jeu en favorie )</h6>
+                                <?php
+                                }
+                                ?>
+                                <br/>
                                 <p class="card-text">
                                     <?php echo $game['description']; ?>
                                 </p>
@@ -138,6 +153,64 @@ $users = $stmt->fetchAll();
                 <?php endforeach; ?>
 
             </div>
+        </section>
+
+        <?php
+        if ($nbGames == 0)
+        {
+            if (!isset($_SESSION['identifier']))
+            {
+        ?>
+            <section class="mb-5">
+                <p>
+                    il semble que n'a ajouté de jeu, pourquoi pas créer
+                    un compte et ajouté le tient !
+                </p>
+                <a href="register.html" class="btn btn-light">inscription</a>
+            <section class="mb-5">
+        <?php
+            }
+            else
+            {
+        ?>
+            <section class="mb-5">
+                <p>
+                    il semble que n'a ajouté de jeu, pourquoi ajouté le tient !
+                </p>
+                <a href="add_game.html" class="btn btn-light">Ajouter un jeu</a>
+            <section class="mb-5">
+        <?php
+            }
+        }
+        ?>
+
+        <br/><br/>
+        <hr class="my-4 border-secondary">
+
+        <section class="mb-5">
+            <?php if (isset($_SESSION['identifier'])) : ?>
+                <?php
+                if ($nbGames != 0)
+                {
+                ?>
+                    <h2 class="mb-3">Ajouter mon jeu</h2>
+                    <p>
+                        En tant qu'utilisateur connecté, vous pouvez ajouter vos jeux préférés.
+                        Cliquez sur le bouton ci-dessous pour accéder au formulaire d'ajout de jeu.
+                    </p>
+                    <a href="add_game.html" class="btn btn-light">Ajouter un jeu</a>
+                    <br/><br/>
+
+                    <hr class="my-4 border-secondary">
+
+                    <h2 class="mb-3">Mes jeux favoris</h2>
+                    <p>
+                        En tant qu'utilisateur connecté, vous pouvez gérer vos jeux favoris.
+                        Cliquez sur le bouton ci-dessous pour accéder à votre liste de jeux favoris.
+                    </p>
+                    <a href="favorites.php" class="btn btn-light">Voir mes jeux favoris</a>
+                <?php } ?>
+                <?php endif; ?>
         </section>
     </main>
 

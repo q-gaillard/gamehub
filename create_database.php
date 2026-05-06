@@ -22,6 +22,16 @@
         genre VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
         image VARCHAR(255) NOT NULL,
-        user_id INT NOT NULL
+        user_id INT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+
+    // table favoris
+    $pdo->exec("CREATE TABLE IF NOT EXISTS favoris (
+    idUser INT,
+    idGame INT,
+    PRIMARY KEY (idUser, idGame),
+    FOREIGN KEY (idUser) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (idGame) REFERENCES games(id) ON DELETE CASCADE
     )");
 ?>

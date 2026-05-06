@@ -47,7 +47,7 @@ if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/", $pas
 }
 
 //es que le mot de passe corespond
-if (!$password == $confirm_password)
+if ($password != $confirm_password)
 {
     $isValid = false;
     $errorMessage = "votre mot de passe n'est pas identique sur les deux champs";
