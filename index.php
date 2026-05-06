@@ -126,6 +126,18 @@ if (isset($_SESSION['user_id'])) {
                                 }
                                 ?>
                                 <br/>
+                                <?php
+                                if ($game['user_id'] ==  $_SESSION['user_id'] && isset($_SESSION['identifier']))
+                                {
+                                ?>
+                                    <form method="POST" action="modifier_game_interface.php">
+                                        <input type="hidden" name="game_id" value="<?php echo $game['id']; ?>">
+                                        <button type="submit" class="btn btn-warning">modifier ma proposition</button>
+                                    </form>
+                                    <br/>
+                                <?php
+                                }
+                                ?>
                                 <p class="card-text">
                                     <?php echo $game['description']; ?>
                                 </p>
